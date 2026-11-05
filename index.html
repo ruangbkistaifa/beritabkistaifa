@@ -1,0 +1,64 @@
+---
+layout: default
+title: Beranda
+---
+{%- assign pengumuman = site.posts | where: "rubrik", "pengumuman" -%}
+{%- assign semua = paginator.posts -%}
+
+{% if paginator.page == 1 %}
+<section class="home-top">
+  <div class="wrap top-grid">
+    <div>
+      {% if semua.size > 0 %}
+        {% include kartu.html post=semua.first besar=true %}
+      {% else %}
+        <div class="empty"><p><b>Belum ada berita.</b></p><p>Berita pertama akan tampil di sini setelah diterbitkan.</p></div>
+      {% endif %}
+    </div>
+    <aside class="side">
+      <div class="box">
+        <h2>Pengumuman terbaru <a href="{{ '/rubrik/pengumuman/' | relative_url }}">Semua</a></h2>
+        {% if pengumuman.size > 0 %}
+        <ul class="ann">
+          {% for a in pengumuman limit: 4 %}
+          <li><a href="{{ a.url | relative_url }}"><b>{{ a.title }}</b>{% include tanggal.html date=a.date %}</a></li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="ann-empty">Belum ada pengumuman.</p>
+        {% endif %}
+      </div>
+      <div class="box">
+        <h2>Layanan prodi</h2>
+        <ul class="links">
+          {% for t in site.tautan %}
+          <li><a href="{{ t.url }}" target="_blank" rel="noopener"><b>{{ t.nama }}</b><span>{{ t.ket }}</span></a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endif %}
+
+<section class="sec">
+  <div class="wrap">
+    <h2 class="sec-title">{% if paginator.page == 1 %}Berita terbaru{% else %}Berita · halaman {{ paginator.page }}{% endif %}</h2>
+    {% assign lewati = 0 %}{% if paginator.page == 1 %}{% assign lewati = 1 %}{% endif %}
+    {% if semua.size > lewati %}
+    <div class="grid">
+      {% for p in semua offset: lewati %}{% include kartu.html post=p %}{% endfor %}
+    </div>
+    {% elsif paginator.page == 1 and semua.size == 1 %}
+    <p class="results-info">Berita lainnya akan tampil di sini.</p>
+    {% endif %}
+
+    {% if paginator.total_pages > 1 %}
+    <nav class="pager" aria-label="Halaman berita">
+      {% if paginator.previous_page %}<a class="btn-sm" href="{{ paginator.previous_page_path | relative_url }}">‹ Lebih baru</a>{% endif %}
+      <span>Halaman {{ paginator.page }} dari {{ paginator.total_pages }}</span>
+      {% if paginator.next_page %}<a class="btn-sm" href="{{ paginator.next_page_path | relative_url }}">Lebih lama ›</a>{% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>

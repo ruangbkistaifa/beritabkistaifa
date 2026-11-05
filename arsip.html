@@ -1,0 +1,28 @@
+---
+layout: default
+title: Arsip Berita
+permalink: /arsip/
+---
+<section class="page-head">
+  <div class="wrap">
+    <p class="kicker">Arsip</p>
+    <h1>Semua tulisan</h1>
+    <p class="count">{{ site.posts.size }} tulisan, terbaru di atas</p>
+  </div>
+</section>
+<div class="wrap narrow arsip">
+  {% assign per_tahun = site.posts | group_by_exp: "p", "p.date | date: '%Y'" %}
+  {% for g in per_tahun %}
+  <section>
+    <h2>{{ g.name }}</h2>
+    <ul>
+      {% for p in g.items %}
+      {%- assign rb = site.data.rubrik | where: "id", p.rubrik | first -%}
+      <li>{% include tanggal.html date=p.date %}<a href="{{ p.url | relative_url }}">{{ p.title }}</a><span class="chip r-{{ p.rubrik }}">{{ rb.singkat | default: "Berita" }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% else %}
+  <div class="empty"><p><b>Belum ada tulisan.</b></p></div>
+  {% endfor %}
+</div>

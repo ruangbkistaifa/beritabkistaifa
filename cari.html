@@ -1,0 +1,60 @@
+---
+layout: default
+title: Cari Berita
+permalink: /cari/
+---
+<section class="page-head">
+  <div class="wrap">
+    <p class="kicker">Pencarian</p>
+    <h1>Cari berita dan pengumuman</h1>
+    <form class="search-box" id="cariForm" role="search">
+      <label for="q" class="skip">Kata kunci</label>
+      <input type="search" id="q" name="q" placeholder="Contoh: skripsi, seminar, beasiswa" autocomplete="off">
+      <button class="btn" type="submit">Cari</button>
+    </form>
+  </div>
+</section>
+<section class="wrap list-sec">
+  <p class="results-info" id="info" aria-live="polite">Ketik kata kunci untuk mulai mencari.</p>
+  <div class="grid" id="hasil"></div>
+</section>
+<noscript><div class="wrap"><p class="results-info">Pencarian memerlukan JavaScript. Gunakan halaman <a href="{{ '/arsip/' | relative_url }}">Arsip</a> untuk melihat semua tulisan.</p></div></noscript>
+
+<script>
+(function(){
+  var BULAN = {{ site.data.bulan | jsonify }};
+  var SRC = "{{ '/search.json' | relative_url }}";
+  var form = document.getElementById("cariForm"), q = document.getElementById("q"),
+      info = document.getElementById("info"), hasil = document.getElementById("hasil"), data = null;
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function tgl(s){ var p = s.split("-"); return Number(p[2]) + " " + BULAN[Number(p[1]) - 1] + " " + p[0]; }
+  function norm(s){ return String(s || "").toLowerCase(); }
+  function render(kata){
+    var k = norm(kata).trim();
+    if(!k){ info.textContent = "Ketik kata kunci untuk mulai mencari."; hasil.innerHTML = ""; return; }
+    var bagian = k.split(/\s+/);
+    var cocok = data.filter(function(d){
+      var teks = norm(d.judul + " " + d.ringkasan + " " + d.rubrik_nama + " " + d.isi);
+      return bagian.every(function(b){ return teks.indexOf(b) >= 0; });
+    });
+    info.textContent = cocok.length ? cocok.length + " tulisan ditemukan untuk “" + kata.trim() + "”." : "Tidak ada tulisan yang cocok dengan “" + kata.trim() + "”. Coba kata kunci lain.";
+    hasil.innerHTML = cocok.map(function(d){
+      return '<article class="card"><a class="card-link" href="' + esc(d.url) + '">' +
+        '<div class="card-body"><div class="meta"><span class="chip r-' + esc(d.rubrik) + '">' + esc(d.rubrik_nama) + '</span><time datetime="' + esc(d.tanggal) + '">' + esc(tgl(d.tanggal)) + '</time></div>' +
+        '<h3 class="card-title">' + esc(d.judul) + '</h3><p class="card-sum">' + esc(d.ringkasan) + '</p></div></a></article>';
+    }).join("");
+  }
+  function cari(kata){
+    if(data){ render(kata); return; }
+    info.textContent = "Memuat…";
+    fetch(SRC).then(function(r){ return r.json(); }).then(function(j){ data = j; render(kata); })
+      .catch(function(){ info.textContent = "Pencarian gagal dimuat. Coba muat ulang halaman."; });
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault(); cari(q.value);
+    try{ history.replaceState(null, "", "?q=" + encodeURIComponent(q.value)); }catch(_){}
+  });
+  var awal = new URLSearchParams(location.search).get("q");
+  if(awal){ q.value = awal; cari(awal); } else { q.focus(); }
+})();
+</script>

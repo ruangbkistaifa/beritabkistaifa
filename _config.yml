@@ -1,0 +1,53 @@
+# =========================================================
+# PENGATURAN SITUS — Berita Prodi BKI STAIFA Pamekasan
+# Setelah mengubah file ini, tunggu 1–2 menit sampai situs diperbarui.
+# =========================================================
+
+title: Berita Prodi BKI STAIFA
+nama_prodi: Program Studi Bimbingan dan Konseling Islam
+kampus: STAI Al Falah (STAIFA) Pamekasan
+description: Berita kegiatan, pengumuman akademik, prestasi, serta artikel dan opini Program Studi Bimbingan dan Konseling Islam STAI Al Falah (STAIFA) Pamekasan.
+logo: /assets/img/logo.jpg
+lang: id_ID
+timezone: Asia/Jakarta
+
+# Alamat situs. Jika nama repo bukan "berita", ganti baseurl menjadi "/<nama-repo>".
+url: "https://bkistaifa.github.io"
+baseurl: "/berita"
+
+# Kontak yang tampil di bagian bawah situs (kosongkan jika belum ada)
+kontak_email: ""
+kontak_wa: ""          # format 628xxxxxxxxxx
+
+# Tautan layanan prodi di bagian bawah situs dan beranda
+tautan:
+  - nama: Ruang BKI STAIFA
+    ket: Layanan konseling daring mahasiswa
+    url: https://ruangbkistaifa.github.io/ruangbkistaifa/
+  - nama: Pengajuan Judul Skripsi
+    ket: Formulir daring dan cek status
+    url: https://bkistaifa.github.io/bkistaifa/
+
+# ----- Pengaturan teknis (tidak perlu diubah) -----
+permalink: /:year/:month/:title/
+paginate: 9
+paginate_path: "/halaman/:num/"
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+feed:
+  path: feed.xml
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      penulis: Admin Prodi BKI
+exclude:
+  - README.md
+  - PANDUAN-MENULIS.md
+  - TEMPLATE-BERITA.md

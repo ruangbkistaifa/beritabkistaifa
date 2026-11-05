@@ -1,0 +1,6 @@
+---
+layout: null
+permalink: /search.json
+---
+[{% for p in site.posts %}{%- assign rb = site.data.rubrik | where: "id", p.rubrik | first -%}
+{"judul":{{ p.title | jsonify }},"url":{{ p.url | relative_url | jsonify }},"tanggal":{{ p.date | date: "%Y-%m-%d" | jsonify }},"rubrik":{{ p.rubrik | jsonify }},"rubrik_nama":{{ rb.singkat | default: "Berita" | jsonify }},"ringkasan":{{ p.ringkasan | default: p.excerpt | strip_html | strip_newlines | truncate: 220 | jsonify }},"isi":{{ p.content | strip_html | strip_newlines | truncatewords: 400 | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
