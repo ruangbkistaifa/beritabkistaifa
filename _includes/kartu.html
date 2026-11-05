@@ -1,0 +1,16 @@
+{%- assign _kp = include.post -%}
+{%- assign _kr = site.data.rubrik | where: "id", _kp.rubrik | first -%}
+<article class="card{% if include.besar %} card-lg{% endif %}">
+  <a class="card-link" href="{{ _kp.url | relative_url }}">
+    {% if _kp.gambar %}
+    <img class="thumb" src="{{ _kp.gambar | relative_url }}" alt="" loading="lazy">
+    {% else %}
+    <div class="thumb thumb-ph r-{{ _kp.rubrik }}" aria-hidden="true"><span>{{ _kr.singkat | default: "Berita" }}</span></div>
+    {% endif %}
+    <div class="card-body">
+      <div class="meta"><span class="chip r-{{ _kp.rubrik }}">{{ _kr.singkat | default: "Berita" }}</span>{% include tanggal.html date=_kp.date %}</div>
+      <h3 class="card-title">{{ _kp.title }}</h3>
+      <p class="card-sum">{{ _kp.ringkasan | default: _kp.excerpt | strip_html | strip_newlines | truncate: 170 }}</p>
+    </div>
+  </a>
+</article>

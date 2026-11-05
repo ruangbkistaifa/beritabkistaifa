@@ -1,0 +1,21 @@
+# Daftar rubrik. Kolom "id" dipakai di baris "rubrik:" setiap berita.
+- id: kegiatan
+  nama: Berita Kegiatan
+  singkat: Kegiatan
+  deskripsi: Seminar, praktik lapangan, kunjungan, sidang, dan kegiatan prodi lainnya.
+  url: /rubrik/kegiatan/
+- id: pengumuman
+  nama: Pengumuman Akademik
+  singkat: Pengumuman
+  deskripsi: Jadwal, ujian, beasiswa, dan edaran resmi prodi.
+  url: /rubrik/pengumuman/
+- id: prestasi
+  nama: Prestasi
+  singkat: Prestasi
+  deskripsi: Capaian mahasiswa dan dosen Bimbingan dan Konseling Islam.
+  url: /rubrik/prestasi/
+- id: artikel
+  nama: Artikel & Opini
+  singkat: Artikel
+  deskripsi: Tulisan dosen dan mahasiswa seputar bimbingan dan konseling Islam.
+  url: /rubrik/artikel/

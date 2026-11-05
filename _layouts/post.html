@@ -1,0 +1,71 @@
+---
+layout: default
+---
+{%- assign rb = site.data.rubrik | where: "id", page.rubrik | first -%}
+{%- assign kata = content | number_of_words -%}
+{%- assign menit = kata | divided_by: 200 | plus: 1 -%}
+<article class="post">
+  <div class="wrap narrow">
+    <nav class="crumbs" aria-label="Lokasi halaman">
+      <a href="{{ '/' | relative_url }}">Beranda</a><span aria-hidden="true">›</span>
+      {% if rb %}<a href="{{ rb.url | relative_url }}">{{ rb.nama }}</a>{% else %}<span>Berita</span>{% endif %}
+    </nav>
+    <span class="chip r-{{ page.rubrik }}">{{ rb.singkat | default: "Berita" }}</span>
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.ringkasan %}<p class="post-lead">{{ page.ringkasan }}</p>{% endif %}
+    <div class="post-meta">
+      {% include tanggal.html date=page.date %}
+      <span aria-hidden="true">·</span><span>{{ page.penulis }}</span>
+      <span aria-hidden="true">·</span><span>{{ menit }} menit baca</span>
+    </div>
+  </div>
+
+  {% if page.gambar %}
+  <figure class="wrap post-fig">
+    <img src="{{ page.gambar | relative_url }}" alt="{{ page.keterangan_gambar | default: page.title }}">
+    {% if page.keterangan_gambar %}<figcaption>{{ page.keterangan_gambar }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
+
+  <div class="wrap narrow">
+    <div class="prose">
+      {{ content }}
+    </div>
+
+    <div class="share">
+      <span>Bagikan:</span>
+      {%- assign tautan_berita = page.url | absolute_url -%}
+      {%- assign teks_wa = page.title | append: " " | append: tautan_berita -%}
+      <a class="btn-sm" href="https://wa.me/?text={{ teks_wa | url_encode }}" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="btn-sm" type="button" id="salinLink">Salin tautan</button>
+    </div>
+  </div>
+</article>
+
+{%- assign terkait = site.posts | where: "rubrik", page.rubrik | where_exp: "p", "p.url != page.url" -%}
+{% if terkait.size > 0 %}
+<section class="related">
+  <div class="wrap">
+    <h2 class="sec-title">Lainnya di {{ rb.nama | default: "rubrik ini" }}</h2>
+    <div class="grid">
+      {% for p in terkait limit: 3 %}{% include kartu.html post=p %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<nav class="wrap narrow prevnext" aria-label="Berita sebelum dan sesudahnya">
+  {% if page.previous %}<a href="{{ page.previous.url | relative_url }}"><small>Sebelumnya</small>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+  {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><small>Berikutnya</small>{{ page.next.title }}</a>{% endif %}
+</nav>
+
+<script>
+(function(){
+  var b = document.getElementById("salinLink"); if(!b) return;
+  b.addEventListener("click", function(){
+    var done = function(t){ b.textContent = t; setTimeout(function(){ b.textContent = "Salin tautan"; }, 2000); };
+    try{ navigator.clipboard.writeText(location.href).then(function(){ done("Tersalin"); }, function(){ done("Gagal menyalin"); }); }
+    catch(e){ done("Gagal menyalin"); }
+  });
+})();
+</script>

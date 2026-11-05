@@ -1,0 +1,31 @@
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand foot-brand">
+        <img src="{{ '/assets/img/logo.jpg' | relative_url }}" alt="" width="42" height="42">
+        <span><b>{{ site.nama_prodi }}</b><small>{{ site.kampus }}</small></span>
+      </div>
+      {% if site.kontak_email != "" or site.kontak_wa != "" %}
+      <p class="foot-contact">
+        {% if site.kontak_email != "" %}<a href="mailto:{{ site.kontak_email }}">{{ site.kontak_email }}</a>{% endif %}
+        {% if site.kontak_wa != "" %}<a href="https://wa.me/{{ site.kontak_wa }}" target="_blank" rel="noopener">WhatsApp prodi</a>{% endif %}
+      </p>
+      {% endif %}
+    </div>
+    <div>
+      <h2 class="foot-h">Rubrik</h2>
+      <ul class="foot-list">
+        {% for r in site.data.rubrik %}<li><a href="{{ r.url | relative_url }}">{{ r.nama }}</a></li>{% endfor %}
+        <li><a href="{{ '/arsip/' | relative_url }}">Arsip semua berita</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="foot-h">Layanan prodi</h2>
+      <ul class="foot-list">
+        {% for t in site.tautan %}<li><a href="{{ t.url }}" target="_blank" rel="noopener">{{ t.nama }}</a></li>{% endfor %}
+        <li><a href="{{ '/feed.xml' | relative_url }}">Langganan RSS</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-base">© {{ site.time | date: "%Y" }} {{ site.nama_prodi }} · {{ site.kampus }}</div>
+</footer>

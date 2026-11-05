@@ -1,0 +1,26 @@
+---
+layout: default
+---
+{%- assign rb = site.data.rubrik | where: "id", page.rubrik | first -%}
+{%- assign daftar = site.posts | where: "rubrik", page.rubrik -%}
+<section class="page-head r-band-{{ page.rubrik }}">
+  <div class="wrap">
+    <p class="kicker">Rubrik</p>
+    <h1>{{ rb.nama }}</h1>
+    <p class="lead">{{ rb.deskripsi }}</p>
+    <p class="count">{{ daftar.size }} tulisan</p>
+  </div>
+</section>
+<section class="wrap list-sec">
+  {% if daftar.size > 0 %}
+  <div class="grid">
+    {% for p in daftar %}{% include kartu.html post=p %}{% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">
+    <p><b>Belum ada tulisan di rubrik ini.</b></p>
+    <p>Tulisan baru akan muncul di sini setelah diterbitkan admin prodi.</p>
+    <a class="btn" href="{{ '/' | relative_url }}">Kembali ke beranda</a>
+  </div>
+  {% endif %}
+</section>
