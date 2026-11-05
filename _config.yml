@@ -12,8 +12,8 @@ lang: id_ID
 timezone: Asia/Jakarta
 
 # Alamat situs. Jika nama repo bukan "berita", ganti baseurl menjadi "/<nama-repo>".
-url: "https://bkistaifa.github.io"
-baseurl: "/berita"
+url: "https://ruangbkistaifa.github.io"
+baseurl: "/beritabkistaifa"
 
 # Kontak yang tampil di bagian bawah situs (kosongkan jika belum ada)
 kontak_email: ""
